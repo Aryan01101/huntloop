@@ -338,8 +338,9 @@ const guestRegister = async (req, res) => {
     const randomStr = crypto.randomBytes(4).toString('hex');
     const guestEmail = `guest-${timestamp}-${randomStr}@demo.huntloop.com`;
 
-    // Use simple password for guests
-    const guestPassword = 'Guest2024!';
+    // Per-account random password — never reused across guest accounts.
+    // Returned once in the response below; the guest isn't expected to remember it.
+    const guestPassword = `${crypto.randomBytes(9).toString('base64url')}Aa1!`;
 
     // Create guest user with special settings
     const guestName = name || `Demo ${guestRole.charAt(0).toUpperCase() + guestRole.slice(1)}`;
@@ -481,6 +482,16 @@ const switchRole = async (req, res) => {
 // @access  Private (Guest only)
 const upgradeGuest = async (req, res) => {
   try {
+    // Validate input (email format, password strength, confirmPassword match)
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({
+        success: false,
+        message: "Validation failed",
+        errors: errors.array(),
+      });
+    }
+
     const { email, password, confirmPassword } = req.body;
 
     // Check if user is a guest
