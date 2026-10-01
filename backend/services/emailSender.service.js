@@ -1,7 +1,8 @@
 const { Resend } = require('resend');
 require('dotenv').config();
 
-const resend = new Resend(process.env.RESEND_API_KEY);
+// Resend throws on a missing key, so only construct it when configured
+const resend = process.env.RESEND_API_KEY ? new Resend(process.env.RESEND_API_KEY) : null;
 const FROM_EMAIL = process.env.OUTREACH_FROM_EMAIL || 'onboarding@resend.dev';
 
 /**
@@ -11,6 +12,10 @@ const FROM_EMAIL = process.env.OUTREACH_FROM_EMAIL || 'onboarding@resend.dev';
  */
 async function sendEmail(emailData) {
   const { to, subject, body, replyTo } = emailData;
+
+  if (!resend) {
+    return { success: false, error: 'Email sending is not configured (RESEND_API_KEY missing)' };
+  }
 
   // Validation
   if (!to || !subject || !body) {

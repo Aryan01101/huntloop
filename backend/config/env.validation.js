@@ -19,7 +19,6 @@ const REQUIRED_VARS = [
  * Required environment variables for production only
  */
 const PRODUCTION_REQUIRED_VARS = [
-  'SENTRY_DSN', // Error tracking is critical in production
   'FRONTEND_URL', // CORS must be properly configured
 ];
 
@@ -27,6 +26,7 @@ const PRODUCTION_REQUIRED_VARS = [
  * Recommended environment variables (warnings if missing)
  */
 const RECOMMENDED_VARS = [
+  'SENTRY_DSN', // Error tracking (Sentry no-ops when unset)
   'GEMINI_API_KEY', // Required for AI features
   'RESEND_API_KEY', // Required for email functionality
   'OUTREACH_FROM_EMAIL', // Required for sending emails

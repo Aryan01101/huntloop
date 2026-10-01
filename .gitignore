@@ -440,9 +440,6 @@ frontend/.env.local
 backend/.env
 backend/config/ssl/
 
-# Dependencies
-package-lock.json
-
 # macOS
 .DS_Store
 .AppleDouble
