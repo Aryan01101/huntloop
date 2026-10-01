@@ -36,6 +36,9 @@ COPY --from=builder /app/node_modules ./node_modules
 # Copy application code
 COPY --chown=nodejs:nodejs . .
 
+# Writable log/upload directories for the non-root user (/app itself is root-owned)
+RUN mkdir -p /app/logs /app/uploads && chown nodejs:nodejs /app/logs /app/uploads
+
 # Switch to non-root user
 USER nodejs
 
