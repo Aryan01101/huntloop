@@ -129,7 +129,7 @@ function validateConfig() {
 try {
   validateConfig();
 } catch (error) {
-  console.error('Email sender configuration error:', error.message);
+  console.warn('Email sending disabled:', error.message);
 }
 
 module.exports = {
